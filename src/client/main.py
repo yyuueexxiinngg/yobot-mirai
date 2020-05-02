@@ -54,8 +54,8 @@ def main():
   |___/
 ==============================""")
     print("正在初始化...")
-
-    basedir = "." if platform.system() == "Windows" else "./yobot_data"
+    # 暂未知在Linux下将工作目录切换至"./yobot_data"的原因, 此行导致获取不到config, 暂时comment掉
+    basedir = "."  # if platform.system() == "Windows" else "./yobot_data"
     if os.path.exists(os.path.join(basedir, "yobot_config.json")):
         with open(os.path.join(basedir, "yobot_config.json"), "r") as f:
             config = json.load(f)

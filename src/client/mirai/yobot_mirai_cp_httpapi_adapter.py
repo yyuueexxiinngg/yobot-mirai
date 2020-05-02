@@ -12,6 +12,7 @@ if __package__:
 else:
     from mirai import Mirai, EventType, Event
 
+
 # 本项目构建的框架非常粗糙且幼稚，不建议各位把时间浪费本项目上
 # 此框架参照python-mirai实现
 # 如果想开发自己的机器人，建议直接使用 python-mirai 框架
@@ -212,7 +213,6 @@ class MiraiHttp:
 
         # 存放发送人信息
         sender = {"age": 0,
-                  "nickname": mirai_message["sender"]["memberName"],
                   "sex": "",
                   "user_id": mirai_message["sender"]["id"]
                   }
@@ -228,6 +228,7 @@ class MiraiHttp:
             # 消息子类型
             cq_message["sub_type"] = "normal"  # 不去支持事件
 
+            sender["nickname"] = mirai_message["sender"]["memberName"]
             sender["area"] = ""
             sender["card"] = ""
             sender["level"] = ""
@@ -235,8 +236,10 @@ class MiraiHttp:
         else:
             # 消息子类型
             if mirai_message["type"] == "FriendMessage":
+                sender["nickname"] = mirai_message["sender"]["nickname"]
                 cq_message["sub_type"] = "friend"
             elif mirai_message["type"] == "TempMessage":
+                sender["nickname"] = mirai_message["sender"]["memberName"]
                 cq_message["sub_type"] = "group"
                 cq_message["from_group"] = mirai_message["sender"]["group"]["id"]  # 此块CQ中并不存在, 额外添加来回复临时会话
             else:

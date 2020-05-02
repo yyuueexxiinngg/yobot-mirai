@@ -4,7 +4,7 @@
  
 ## 运行方法
  
-### 先决条件: 运行mrai以及mirai-http-api   参照[mirai-console](https://github.com/mamoe/mirai-console)
+### 先决条件: 运行mirai以及mirai-http-api   参照[mirai-console](https://github.com/mamoe/mirai-console)
 
 #### 运行方法参考原项目源码方式部署, 部署完成后修改config中mirai开头的键值对
 

@@ -7,6 +7,7 @@ src/client/*/
 !src/client/ybplugins/
 !src/client/yybplugins/
 !src/client/public/
+!src/client/mirai/
 src/client/.*
 src/client/*.json
 !src/client/default_*

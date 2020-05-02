@@ -274,7 +274,7 @@ def get_version(base_version: str, base_commit:  int) -> dict:
             return {
                 "run-as": "python",
                 "commited": False,
-                "ver_name": "yobot{}源码版\n存在未提交的修改".format(base_version)
+                "ver_name": "yobot{} On Mirai 源码版\n存在未提交的修改".format(base_version)
             }
     except Exception as e:
         print(e)
@@ -284,7 +284,7 @@ def get_version(base_version: str, base_commit:  int) -> dict:
             "ver_name": "无法检测版本"
         }
     try:
-        vername = "yobot{}源码版".format(base_version)
+        vername = "yobot{} On Mirai 源码版".format(base_version)
         with os.popen("git rev-list --count HEAD") as r:
             summary = r.read()
         extra_commit = int(summary.strip())-base_commit

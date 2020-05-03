@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import re
-from typing import Callable, Dict
+from typing import Callable, Dict, List
 
 from quart import Quart
 
@@ -18,13 +18,17 @@ else:
 # 如果想开发自己的机器人，建议直接使用 python-mirai 框架
 # https://github.com/NatriumLab/python-mirai
 
-# TODO: List of at
-def parse_cq_at(message: str):
-    match = re.match(r"\[CQ:at,qq=(\d+)\]", message)
-    if match is not None and match.group(1):
-        message = re.sub(r"\[CQ:at,qq=(\d+)\]", "", message)
-        return match.group(1), message
-    return None, message
+def cq_message_to_mirai_message_chain(message: str) -> List:
+    splits = re.split(r"(\[CQ:at,qq=\d+\])", message)
+
+    message_chain = []
+    for text in splits:
+        match = re.match(r"\[CQ:at,qq=(\d+)\]", text)
+        if match is not None and match.group(1):
+            message_chain.append({"type": "At", "target": int(match.group(1))})
+        else:
+            message_chain.append({"type": "Plain", "text": text})
+    return message_chain
 
 
 # Api为Yobot而生....
@@ -36,12 +40,7 @@ class Api:
 
     async def send_msg(self, **message):
         logging.debug(message)
-        text = message["message"]
-        at, text = parse_cq_at(text)
-        message_chain = []
-        if at:
-            message_chain.append({"type": "At", "target": int(at)})
-        message_chain.append({"type": "Plain", "text": text})
+        message_chain = cq_message_to_mirai_message_chain(message["message"])
         target = message["user_id"]
         if message["message_type"] == "private":
             if message["sub_type"] == "group":
@@ -57,11 +56,7 @@ class Api:
             raise NotImplementedError
 
     async def send_group_msg(self, group_id, message):
-        at, message = parse_cq_at(message)
-        message_chain = []
-        if at:
-            message_chain.append({"type": "At", "target": int(at)})
-        message_chain.append({"type": "Plain", "text": message})
+        message_chain = cq_message_to_mirai_message_chain(message)
         await self.mirai_instance.send_group_message(group_id, message_chain)
 
     async def send_private_msg(self, target: int, message: str):
@@ -101,7 +96,7 @@ class Api:
             })
         return cq_group_member_list
 
-    async def get_stranger_info(self):
+    async def get_stranger_info(self, user_id: int):
         # Mirai 暂无此接口
         raise NotImplementedError
 
@@ -138,7 +133,7 @@ class MiraiHttp:
     mirai_instance: Mirai
 
     def __init__(self, auth_key: str, host: str, port: int, qq: int):
-        logging.debug("Using Mirai backend")
+        logging.info("Using Mirai backend")
         self.auth_key = auth_key
         self.host = host
         self.port = port

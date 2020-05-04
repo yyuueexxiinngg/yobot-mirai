@@ -54,10 +54,13 @@ def main():
   |___/
 ==============================""")
     print("正在初始化...")
-    # 暂未知在Linux下将工作目录切换至"./yobot_data"的原因, 此行导致获取不到config, 暂时comment掉
-    basedir = "."  # if platform.system() == "Windows" else "./yobot_data"
+
+    if os.path.exists('yobotdata.db'):
+        basedir = "."
+    else:
+        basedir = "./yobot_data"
     if os.path.exists(os.path.join(basedir, "yobot_config.json")):
-        with open(os.path.join(basedir, "yobot_config.json"), "r") as f:
+        with open(os.path.join(basedir, "yobot_config.json"), "r", encoding="utf-8") as f:
             config = json.load(f)
         token = config.get("access_token", None)
         is_mirai = config.get("is_mirai", None)
@@ -80,7 +83,7 @@ def main():
         mirai_qq = config.get("mirai_qq")
         cqbot = MiraiHttp(auth_key=mirai_auth_key, host=mirai_host, port=mirai_port, qq=mirai_qq)
 
-    bot = yobot.Yobot(data_path=".",
+    bot = yobot.Yobot(data_path=basedir,
                       scheduler=sche,
                       quart_app=cqbot.server_app,
                       bot_api=cqbot._api,

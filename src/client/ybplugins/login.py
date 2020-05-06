@@ -8,9 +8,9 @@ from urllib.parse import urljoin
 from aiocqhttp.api import Api
 from apscheduler.triggers.cron import CronTrigger
 from quart import (Quart, Response, jsonify, make_response, redirect, request,
-                   session, url_for)
+                   send_from_directory, session, url_for)
 
-from .templating import render_template
+from .templating import render_template, template_folder
 from .web_util import rand_string
 from .ybdata import User, User_login
 
@@ -73,20 +73,21 @@ class Login:
         user.login_code = login_code
         user.login_code_available = True
         user.login_code_expire_time = int(time.time())+60
+        user.deleted = False
         user.save()
 
         # 链接登录
         newurl = urljoin(
             self.setting['public_address'],
-            '{}login/?qqid={}&key={}'.format(
+            '{}login/c/#qqid={}&key={}'.format(
                 self.setting['public_basepath'],
                 user.qqid,
                 login_code,
             )
         )
-        reply = newurl+'#\n请在一分钟内点击链接登录，登录成功后将保持登录7天'
+        reply = newurl
         if self.setting['web_mode_hint']:
-            reply += '\n\n如果连接无法打开，请仔细阅读教程中《链接无法打开》的说明'
+            reply += '\n\n如果无法打开，请仔细阅读教程中《链接无法打开》的说明'
 
         return {
             'reply': reply,
@@ -204,6 +205,8 @@ class Login:
         if user is None:
             # 有有效Cookie但是数据库没有，怕不是删库跑路了
             raise ExceptionWithAdvice('用户不存在', advice)
+        if user.deleted:
+            raise ExceptionWithAdvice('用户已被删除', '请咨询管理员')
         salty_cookie = _add_salt_and_hash(auth, user.salt)
         userlogin = User_login.get_or_none(
             qqid=qqid,
@@ -329,6 +332,12 @@ class Login:
                     advice=e.advice or f'请私聊机器人“{self._get_prefix()}登录”获取登录地址 ',
                     prefix=prefix
                 )
+
+        @app.route(
+            urljoin(self.setting['public_basepath'], 'login/c/'),
+            methods=['GET', 'POST'])
+        async def yobot_login_code():
+            return await send_from_directory(template_folder, "login-code.html")
 
         @app.route(
             urljoin(self.setting['public_basepath'], 'logout/'),

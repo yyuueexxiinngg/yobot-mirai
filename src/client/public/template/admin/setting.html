@@ -20,7 +20,7 @@
         <el-dialog title="申请yobot域名" :visible.sync="domainApply">
             <el-form>
                 <el-form-item label="域名" label-width="120">
-                    <el-input v-model="applyName" placeholder="此域名已被QQ封禁，不再建议使用" maxlength="16" show-word-limit>
+                    <el-input v-model="applyName" placeholder="字母、数字" maxlength="16" show-word-limit>
                         <template slot="append">.yobot.xyz</template>
                     </el-input>
                 </el-form-item>
@@ -163,7 +163,6 @@
             <el-checkbox v-model="setting.news_jp_official">日服官网</el-checkbox>
             <el-checkbox v-model="setting.news_jp_twitter">日服推特</el-checkbox>
             <el-checkbox v-model="setting.news_tw_official">台服官网</el-checkbox>
-            <el-checkbox v-model="setting.news_tw_facebook">台服FaceBook</el-checkbox>
             <el-checkbox v-model="setting.news_cn_official">国服官网</el-checkbox>
             <el-checkbox v-model="setting.news_cn_bilibili">国服Bilibili动态</el-checkbox>
             <el-row>
@@ -206,7 +205,7 @@
                     <el-select v-model="setting.calender_region" placeholder="日程表区域">
                         <el-option label="日服日程表" value="jp"></el-option>
                         <el-option label="台服日程表" value="tw"></el-option>
-                        <el-option label="国服日程表" value="cn" disabled></el-option>
+                        <el-option label="国服日程表" value="cn"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">

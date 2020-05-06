@@ -72,8 +72,8 @@ def main():
         token = None
         is_mirai = False
 
-
     sche = AsyncIOScheduler(timezone=pytz.timezone('Asia/Shanghai'))
+
     if not is_mirai:
         cqbot = CQHttp(access_token=token,
                        enable_http_post=False)

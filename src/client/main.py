@@ -36,6 +36,7 @@ done
 import asyncio
 import json
 
+import pytz
 from aiocqhttp import CQHttp
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -71,11 +72,11 @@ def main():
         token = None
         is_mirai = False
 
-    sche = AsyncIOScheduler()
+
+    sche = AsyncIOScheduler(timezone=pytz.timezone('Asia/Shanghai'))
     if not is_mirai:
         cqbot = CQHttp(access_token=token,
                        enable_http_post=False)
-
     else:
         mirai_host = config.get("mirai_host")
         mirai_port = config.get("mirai_port")

@@ -410,7 +410,8 @@ class ClanBattle:
         # 如果当前正在挂树，则取消挂树
         Clan_subscribe.delete().where(
             Clan_subscribe.gid == group_id,
-            Clan_subscribe.subscribe_item == 0
+            Clan_subscribe.qqid == qqid,
+            Clan_subscribe.subscribe_item == 0,
         ).execute()
 
         challenge.save()
@@ -524,7 +525,8 @@ class ClanBattle:
         # 如果当前正在挂树，则取消挂树
         Clan_subscribe.delete().where(
             Clan_subscribe.gid == group_id,
-            Clan_subscribe.subscribe_item == 0
+            Clan_subscribe.qqid == qqid,
+            Clan_subscribe.subscribe_item == 0,
         ).execute()
 
         group.save()
@@ -923,7 +925,8 @@ class ClanBattle:
             # 如果当前正在挂树，则取消挂树
             Clan_subscribe.delete().where(
                 Clan_subscribe.gid == group_id,
-                Clan_subscribe.subscribe_item == 0
+                Clan_subscribe.qqid == qqid,
+                Clan_subscribe.subscribe_item == 0,
             ).execute()
         else:
             if membership.last_save_slot != today:
@@ -1210,6 +1213,8 @@ class ClanBattle:
             if cmd == '申请出刀':
                 appli_type = 1
                 extra_msg = None
+            elif cmd == '锁定':
+                return '锁定时请留言'
             else:
                 match = re.match(r'^锁定(?:boss)? *(?:[\:：](.*))?$', cmd)
                 if match:

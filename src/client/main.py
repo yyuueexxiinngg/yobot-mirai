@@ -35,6 +35,7 @@ done
 
 import asyncio
 import json
+import time
 
 import pytz
 from aiocqhttp import CQHttp
@@ -56,13 +57,18 @@ def main():
 ==============================""")
     print("正在初始化...")
 
-    if os.path.exists('yobotdata.db'):
+    if os.path.exists('yobot_config.json'):
         basedir = "."
     else:
         basedir = "./yobot_data"
     if os.path.exists(os.path.join(basedir, "yobot_config.json")):
-        with open(os.path.join(basedir, "yobot_config.json"), "r", encoding="utf-8") as f:
-            config = json.load(f)
+        try:
+            with open(os.path.join(basedir, "yobot_config.json"), "r", encoding="utf-8") as f:
+                config = json.load(f)
+        except json.JSONDecodeError as e:
+            print('配置文件格式错误，请检查配置文件。三秒后关闭')
+            time.sleep(3)
+            raise e from e
         token = config.get("access_token", None)
         is_mirai = config.get("is_mirai", None)
         if token is None:
@@ -111,8 +117,9 @@ def main():
             to_sends = func()
         if to_sends is None:
             return
-        tasks = [cqbot.send_msg(**kwargs) for kwargs in to_sends]
-        await asyncio.gather(*tasks)
+        for kwargs in to_sends:
+            await asyncio.sleep(5)
+            await cqbot.send_msg(**kwargs)
 
     jobs = bot.active_jobs()
     if jobs:

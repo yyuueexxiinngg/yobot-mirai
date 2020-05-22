@@ -1,6 +1,8 @@
 ### 本项目为 [yobot](https://github.com/yuudi/yobot) 的mirai端移植
 
 ### 仅为官方未出mirai版/mirai未推出Mirai-CQ-Adapter时救急临时使用
+
+### 本项目正在准备进入归档模式（archive）
  
 ## 运行方法
  

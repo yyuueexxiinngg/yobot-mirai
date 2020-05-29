@@ -12,11 +12,13 @@
 [@otz](https://github.com/otz)  
 [@Lancercmd](https://github.com/Lancercmd)  
 [@xhl6666](https://github.com/xhl6666)  
+[@ice-b-114](https://github.com/ice-b-114)  
 
 ## Platform Support
 
 [@winrey](https://github.com/winrey)  
 [@yyuueexxiinngg](https://github.com/yyuueexxiinngg)  
+[@AzurCrystal](https://github.com/AzurCrystal)  
 
 ## Bug Report
 
@@ -32,3 +34,5 @@
 [@HsuJv](https://github.com/HsuJv)  
 [@Kelcoin](https://github.com/Kelcoin)  
 [@guch8017](https://github.com/guch8017)  
+[@ConanCCC](https://github.com/ConanCCC)  
+[@wenp5454](https://github.com/wenp5454)  

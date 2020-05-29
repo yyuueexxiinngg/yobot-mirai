@@ -38,13 +38,6 @@ mirai 尚未稳定，稳定后本站会发布教程和一键安装包。如果�
 
 ## yobot 问题
 
-### yobot 对国服的支持情况
-
-公会战：支持  
-竞技场：不支持  
-新闻推送：支持  
-活动日程：支持  
-
 ### 机器人提供的网站无法登录
 
 请参考[无法打开网页](./cannot-open-webpage.md)
@@ -84,6 +77,18 @@ yobot 自动添加第一个登录的用户为最高权限，如果需要手动�
 反向代理的情况中，yobot 可以从 http 标头中 `X-Real-IP` 获取用户 ip，具体请参考[web 模式](./web-mode.md)。  
 Nginx: `proxy_set_header X-Real-IP $remote_addr;`  
 Apache: `RemoteIPHeader X-Real-IP`
+
+### 使用docker-compose运行后提示 " [Errno 13] Permission denied: 'yobotg.sh' "
+
+请参考[Docker部署](../install/docker.md)，
+此类情况均是由 root 账户直接运行 docker 实例造成的。
+在源码根目录中执行：
+
+```shell
+chown -R 1000:1000 .
+```
+
+以解决该问题。
 
 ### 这里没有我的问题
 
